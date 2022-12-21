@@ -85,6 +85,7 @@ def convert_to_graph(edges):
 
 def undirectedPath(edges, start, dest):
     graph = convert_to_graph(edges)
+    # print(graph)
     return hasPathForUndirectedGraph(graph, start, dest, set())
 
 
@@ -100,4 +101,81 @@ def hasPathForUndirectedGraph(graph, start, dest, visited):
         hasPathForUndirectedGraph(graph, neighbor, dest, visited)
     return False
 
-print(undirectedPath(edges, 'i', 'k'))
+# print(undirectedPath(edges, 'i', 'k'))
+
+f = {
+    0: [8, 1, 5], 
+    1: [0], 
+    5: [0 , 8], 
+    8: [0, 5], 
+    2: [3,4], 
+    3: [2, 4], 
+    4: [3, 2]
+    }
+
+def connectedComponentsCount(graph, ):
+    visited = set()
+    counter = 0 
+
+    for node in graph:
+        if(explore(graph, node, visited) == True):
+            counter +=1
+    return counter
+
+
+def explore(graph, current, visited):
+    if current in visited: return False
+    visited.add(current)
+
+    for neighbor in graph[current]:
+        explore(graph, neighbor, visited)
+    return True
+
+# print(connectedComponentsCount(f))
+
+def largest_component(graph):
+    largest = 0
+    visited = set()
+    for node in graph:
+        size = explore_largest_component(graph, node, visited)
+        if largest < size : largest = size
+
+    return largest
+
+def explore_largest_component(graph, current_node, visited):
+    if current_node in visited: return 0
+    visited.add(current_node)
+    size =1
+    for neighbor in graph[current_node]:
+        size += explore_largest_component(graph, neighbor, visited)
+    return size
+
+# print(largest_component(f))
+
+
+edges =[
+    ['w', 'x'],
+    ['x', 'y'],
+    ['z', 'y'],
+    ['z', 'v'],
+    ['w', 'v'],
+
+]
+def compute_shortest_path_in_graph(edges, start, dest):
+    #interested in the number of edges instead of number of nodes
+    #breadth-first traversal is the best approach for this
+    #breadth-first = queue
+    visited = set([start])
+    graph = convert_to_graph(edges)
+    queue  = [[start, 0]]
+    while (len(queue) > 0):
+        node, distance = queue.pop(0)
+        if node == dest : return distance
+
+        for neighbor in graph[node]:
+            if not neighbor in visited: visited.add(neighbor)
+            queue.append([neighbor, distance +1])
+    return -1
+
+
+print(compute_shortest_path_in_graph(edges, 'w', 'z'))
