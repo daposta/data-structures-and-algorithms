@@ -167,6 +167,7 @@ def compute_shortest_path_in_graph(edges, start, dest):
     #breadth-first = queue
     visited = set([start])
     graph = convert_to_graph(edges)
+    if not start in graph : return -1
     queue  = [[start, 0]]
     while (len(queue) > 0):
         node, distance = queue.pop(0)
@@ -178,4 +179,4 @@ def compute_shortest_path_in_graph(edges, start, dest):
     return -1
 
 
-print(compute_shortest_path_in_graph(edges, 'w', 'z'))
+print(compute_shortest_path_in_graph(edges, 'b', 'g'))
